@@ -1,35 +1,53 @@
-/**
- * Created by nhatnk on 4/26/17.
- */
+function Hero(image, top, left, size, speed) {
+    this.image = image;
+    this.top = top;
+    this.left = left;
+    this.size = size;
+    this.speed = speed;
 
-function Hero(image, top, left, size){
-  this.image = image;
-  this.top = top;
-  this.left = left;
-  this.size = size;
+    this.getHeroElement = function () {
+        return '<img width="' + this.size + '"' +
+            ' height="' + this.size + '"' +
+            ' src="' + this.image + '"' +
+            ' style="top: ' + this.top + 'px; left:' + this.left + 'px;position:absolute;" />';
+    }
 
-  this.getHeroElement = function(){
-    return '<img width="'+ this.size + '"' +
-      ' height="'+ this.size + '"' +
-      ' src="' + this.image +'"' +
-      ' style="top: '+this.top+'px; left:'+this.left+'px;position:absolute;" />';
-  }
+    this.moveRight = function () {
+        this.left += this.speed;
+    }
 
-  this.moveRight = function(){
-    this.left += 20;
-    console.log('ok: ' + this.left);
-  }
+    this.moveLeft = function () {
+        this.left -= this.speed;
+    }
 
+    this.moveDown = function () {
+        this.top += this.speed;
+    }
+
+    this.moveUp = function () {
+        this.top -= this.speed;
+    }
 }
 
-var hero = new Hero('pikachu.png', 20, 30, 200);
+let hero = new Hero('images/pikachu.png', 20, 30, 300, 10);
+let firstTop = hero.top;
+let firstLeft = hero.left;
+let maxLeft = window.innerWidth - hero.left - hero.size;
+let maxTop = window.innerHeight - hero.top - hero.size;
 
-function start(){
-  if(hero.left < window.innerWidth - hero.size){
-    hero.moveRight();
-  }
-  document.getElementById('game').innerHTML = hero.getHeroElement();
-  setTimeout(start, 500)
+function start() {
+    if (hero.left < maxLeft && hero.top <= firstTop) {
+        hero.moveRight();
+    } else if (hero.left >= maxLeft && hero.top < maxTop) {
+        hero.moveDown();
+    } else if (hero.left > firstLeft && hero.top >= maxTop) {
+        hero.moveLeft();
+    } else if (hero.left <= firstLeft && hero.top > firstTop) {
+        hero.moveUp();
+    }
+
+    document.getElementById('game').innerHTML = hero.getHeroElement();
+    setTimeout(start, 42);
 }
 
 start();

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chay ngay di!!!</title>
+</head>
+<body>
+​
+<div id="game"></div>
+​
+<script>
+    function Object(image, top, left, size, speed) {
+        this.image = image;
+        this.top = top;
+        this.left = left;
+        this.size = size;
+        this.speed = speed;
+        this.getObjectElement = function () {
+            return '<img width="' + this.size + '" ' +
+                'height="' + this.size + '" ' +
+                'src="' + this.image + '" ' +
+                'style="top: ' + this.top + 'px; left: ' + this.left + 'px; position: absolute;"/>';
+        };
+        this.moveRight = function () {
+            this.left += this.speed;
+        };
+        this.moveLeft = function () {
+            this.left -= this.speed;
+        };
+        this.moveBottom = function () {
+            this.top += this.speed;
+        };
+        this.moveTop = function () {
+            this.top -= this.speed;
+        };
+    }
+    let object = new Object('images/pikachu.png', 20, 10, 120, 10, 5);
+
+    let firstTop = object.top;
+    let firstLeft = object.left;
+    let maxLeft = window.innerWidth - object.size - object.left;
+    let maxTop = window.innerHeight - object.size - object.top;
+
+    function start() {
+        if (object.left < maxLeft && object.top <= firstTop) {
+            object.moveRight();
+        } else if (object.left >= maxLeft && object.top < maxTop) {
+            object.moveBottom();
+        } else if (object.left > firstLeft && object.top >= maxTop) {
+            object.moveLeft();
+        } else if (object.left <= firstLeft && object.top > firstTop) {
+            object.moveTop();
+        }
+        document.getElementById("game").innerHTML = object.getObjectElement();
+        setTimeout(start, 42);
+    }
+    start();
+</script>
+​
+</body>
+</html>
